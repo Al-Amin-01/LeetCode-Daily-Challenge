@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int call(string s, unordered_set<string> &st){
+        if(s.size()==0) return st.size();
+        int n =s.size();
+        int ans=0;
+        
+        for(int i=0;i<s.size();i++){
+            string x=s.substr(0,i+1);
+            if(st.find(x)==st.end()){
+                st.insert(x);
+                ans=max(ans,call(s.substr(i+1,n-1-i),st));
+                st.erase(x);
+            }
+        }
+        return ans;
+    }
+    int maxUniqueSplit(string s) {
+        
+        int n =s.size();
+        int ans=0;
+        unordered_set<string> st;
+        ans=call(s,st);
+        return ans;
+    }
+};
