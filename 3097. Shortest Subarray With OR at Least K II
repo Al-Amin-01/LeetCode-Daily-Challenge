@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void call(int x,vector<int> &v,int val){
+        for(int i=0;i<32;i++){
+            if(x & (1<<i)) v[i]+=val;
+        }
+    }
+    int dop(vector<int> &v){ 
+        int ans=0;
+        for(int i=0;i<32;i++){
+            if(v[i]) ans|=(1<<i);
+        }
+        return ans;
+    }
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        int cur;
+        int ans=INT_MAX;
+        vector<int> v(32,0);
+        int i=0,j=0,n=nums.size();
+        while(j<n){
+            call(nums[j],v,1);
+            cur=dop(v);
+            
+            while(i<=j && i<n && cur>=k){
+                ans=min(ans,j-i+1);
+                call(nums[i],v,-1);
+                cur=dop(v);
+                i++;
+            }
+            j++;
+        }
+        if(ans==INT_MAX) return -1;
+        return ans;
+    }
+};
